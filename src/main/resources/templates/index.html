@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"
+      layout:decorator="layouts/main" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Spring boot | mongodb | docker</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <div class="row">
+        <div class="col-lg-4">
+            <p> Mongo host: <b th:text="${mongo_host}"> </b></p>
+            <p> Mongo port: <b th:text="${mongo_port}"> </b></p>
+            <p> Mongo database: <b th:text="${mongo_database}"> </b></p>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="panel panel-default">
+                <div class="panel-heading" align="center"><b>Customers</b></div>
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr align="center">
+                        <th>First name</th>
+                        <th>Last name</th>
+                    </tr>
+                    <tr th:each="customer : ${customers}">
+                        <td th:text="${customer.firstName}"></td>
+                        <td th:text="${customer.lastName}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-4" align="center">
+            <form action="#" th:action="@{/add}" th:object="${customer}" method="post">
+                <h4>Add new customer</h4>
+                <p>First name: <input type="text" th:field="*{firstName}"/></p>
+                <p>Last name: <input type="text" th:field="*{lastName}"/></p>
+                <p><input type="submit" value="Submit"/></p>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
