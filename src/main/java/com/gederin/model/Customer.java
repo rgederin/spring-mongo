@@ -15,11 +15,11 @@ public class Customer {
 
     @Id
     private String id;
-    private String firstName;
-    private String lastName;
+    private String name;
+    private String phone;
 
-    public Customer(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Customer(String name, String phone) {
+        this.name = name;
+        this.phone = phone;
     }
 }

@@ -22,8 +22,4 @@ public class CustomerService {
     public List<Customer> fetchAllCustomers() {
         return customerRepository.findAll();
     }
-
-    public Customer fetchCustomerByFirstName(String firstName) {
-        return customerRepository.findByFirstName(firstName);
-    }
 }

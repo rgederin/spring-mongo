@@ -19,10 +19,9 @@ import static com.gederin.util.Constants.MONGO_HOST;
 import static com.gederin.util.Constants.MONGO_PORT;
 
 @Controller
-public class ApplicationController {
+public class CustomerController {
 
-    @Autowired
-    private CustomerService customerService;
+    private final CustomerService customerService;
 
     @Value("${spring.data.mongodb.host}")
     private String mongoHost;
@@ -33,8 +32,13 @@ public class ApplicationController {
     @Value("${spring.data.mongodb.database}")
     private String mongoDb;
 
+    @Autowired
+    public CustomerController(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+
     @GetMapping("/")
-    public String home(Model model) {
+    public String index(Model model) {
         model.addAttribute(MONGO_HOST, mongoHost);
         model.addAttribute(MONGO_PORT, mongoPort);
         model.addAttribute(MONGO_DATABASE, mongoDb);
@@ -45,7 +49,7 @@ public class ApplicationController {
     }
 
     @PostMapping("/add")
-    public String greetingSubmit(@ModelAttribute Customer customer, Model model) {
+    public String addCustomer(@ModelAttribute Customer customer, Model model) {
         customerService.saveCustomer(customer);
 
         return "redirect:/";
