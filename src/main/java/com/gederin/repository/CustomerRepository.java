@@ -3,8 +3,10 @@ package com.gederin.repository;
 
 import com.gederin.model.Customer;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
-public interface CustomerRepository extends MongoRepository<Customer, String> {
+import reactor.core.publisher.Mono;
 
+public interface CustomerRepository extends ReactiveMongoRepository<Customer, String>{
+    Mono<Customer> findCustomerByName(String name);
 }

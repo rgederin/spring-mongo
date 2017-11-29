@@ -1,7 +1,5 @@
 package com.gederin.service;
 
-import com.google.common.collect.ImmutableList;
-
 import com.gederin.model.Customer;
 import com.gederin.repository.CustomerRepository;
 
@@ -12,7 +10,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -65,11 +63,10 @@ public class CustomerServiceTest {
 
     @Test
     public void shouldReturnListOfCustomerWhenFetchAllCustomers() {
-        List<Customer> customers = ImmutableList.of(customer, new Customer("RG", "33"));
-        when(customerRepository.findAll()).thenReturn(customers);
+        when(customerRepository.findAll()).thenReturn(Flux.just(customer, new Customer("RG", "33")));
 
         assertThat(customerService.fetchAllCustomers(), notNullValue());
-        assertThat(customerService.fetchAllCustomers().size(), equalTo(2));
-        assertThat(customerService.fetchAllCustomers().get(0), equalTo(customer));
+        assertThat(customerService.fetchAllCustomers().collectList().block().size(), equalTo(2));
+        assertThat(customerService.fetchAllCustomers().collectList().block().get(0), equalTo(customer));
     }
 }

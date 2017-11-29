@@ -15,10 +15,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataMongoTest
-public class CustomerReactiveRepositoryIntegrationTest {
+public class CustomerRepositoryIntegrationTest {
 
     @Autowired
-    private CustomerReactiveRepository customerReactiveRepository;
+    private CustomerRepository customerRepository;
 
     private Customer customer;
 
@@ -26,23 +26,23 @@ public class CustomerReactiveRepositoryIntegrationTest {
     public void setUp(){
         customer = new Customer("Ruslan Gederin", "21931298312");
 
-        customerReactiveRepository.deleteAll().block();
+        customerRepository.deleteAll().block();
     }
 
     @Test
     public void shouldSaveCustomer(){
-        assertThat(customerReactiveRepository.count().block(), equalTo(0L));
+        assertThat(customerRepository.count().block(), equalTo(0L));
 
-        customerReactiveRepository.save(customer).block();
+        customerRepository.save(customer).block();
 
-        assertThat(customerReactiveRepository.count().block(), equalTo(1L));
+        assertThat(customerRepository.count().block(), equalTo(1L));
     }
 
     @Test
     public void shouldFindCustomerByName(){
-        customerReactiveRepository.save(customer).block();
+        customerRepository.save(customer).block();
 
-        Customer customerFromMongo = customerReactiveRepository.findCustomerByName("Ruslan Gederin").block();
+        Customer customerFromMongo = customerRepository.findCustomerByName("Ruslan Gederin").block();
 
         assertThat(customerFromMongo.equals(customer), equalTo(true));
     }

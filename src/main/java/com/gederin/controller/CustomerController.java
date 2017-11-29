@@ -7,30 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import static com.gederin.util.Constants.CUSTOMER;
-import static com.gederin.util.Constants.CUSTOMERS;
-import static com.gederin.util.Constants.INDEX;
-import static com.gederin.util.Constants.MONGO_DATABASE;
-import static com.gederin.util.Constants.MONGO_HOST;
-import static com.gederin.util.Constants.MONGO_PORT;
+import javax.validation.Valid;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
+@Slf4j
 public class CustomerController {
+    private static final String REDIRECT = "redirect:/";
 
     private final CustomerService customerService;
 
-    @Value("${spring.data.mongodb.host}")
-    private String mongoHost;
-
-    @Value("${spring.data.mongodb.port}")
-    private String mongoPort;
-
-    @Value("${spring.data.mongodb.database}")
-    private String mongoDb;
+    @Value("${spring.profiles.active}")
+    private String activeProfile;
 
     @Autowired
     public CustomerController(CustomerService customerService) {
@@ -39,19 +33,25 @@ public class CustomerController {
 
     @GetMapping("/")
     public String index(Model model) {
-        model.addAttribute(MONGO_HOST, mongoHost);
-        model.addAttribute(MONGO_PORT, mongoPort);
-        model.addAttribute(MONGO_DATABASE, mongoDb);
-        model.addAttribute(CUSTOMERS, customerService.fetchAllCustomers());
-        model.addAttribute(CUSTOMER, new Customer());
 
-        return INDEX;
+        model.addAttribute("activeProfile", activeProfile);
+        model.addAttribute("customers", customerService.fetchAllCustomers());
+        model.addAttribute("customer", new Customer());
+
+        return "index";
     }
 
     @PostMapping("/add")
-    public String addCustomer(@ModelAttribute Customer customer, Model model) {
-        customerService.saveCustomer(customer);
+    public String addCustomer(@Valid @ModelAttribute Customer customer, BindingResult bindingResult) {
 
-        return "redirect:/";
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(objectError -> log.error(objectError.toString()));
+
+            return REDIRECT;
+        }
+
+        customerService.saveCustomer(customer).block();
+
+        return REDIRECT;
     }
 }

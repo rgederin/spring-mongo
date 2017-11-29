@@ -2,5 +2,6 @@ coverage:
   ignore:
     - "src/main/java/com/gederin/SpringMongoApplication.java"
     - "src/main/java/com/gederin/model/"
+    - "src/main/java/com/gederin/exception/"
     - "src/test/java/com/gederin/.*"
     - "src/main/java/com/gederin/util/Constants.java"
