@@ -5,4 +5,4 @@ spring:
       host: localhost
       database: customers
   profiles:
-    active: development
+    active: dev
