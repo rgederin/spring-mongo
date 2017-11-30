@@ -8,6 +8,7 @@ Simple WebFlux (running on Netty) application wich demonstrates basic usage of r
 Spring 5
 Spring Boot 2
 WebFlux
+Spring Data Mongo Reactive
 Embedded Mongo
 Thymeleaf
 Docker
