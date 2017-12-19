@@ -10,6 +10,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
+@Slf4j
 public class CustomerServiceTest {
 
     @Mock
@@ -38,6 +40,7 @@ public class CustomerServiceTest {
 
     @Test
     public void shouldInvokeRepositorySaveMethod() {
+        log.error("!!!!! This is tests !!!!!");
         customerService.saveCustomer(customer);
 
         verify(customerRepository, times(1)).save(any());
